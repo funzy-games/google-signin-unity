@@ -1,0 +1,7 @@
+{
+  "name": "google.google-signin-plugin",
+  "displayName": "Google Sign In Plugin for Unity",
+  "version": "1.0.4",
+  "unity": "2017.4",
+  "dependencies": {}
+}
