@@ -77,7 +77,7 @@ namespace Google {
             Status == GoogleSignInStatusCode.SuccessCached) {
         tcs.SetResult(Result);
       } else {
-        tcs.SetException(new GoogleSignIn.SignInException(Status));
+        tcs.SetException(new GoogleSignIn.SignInException(Status, Status.ToString()));
       }
     }
   }

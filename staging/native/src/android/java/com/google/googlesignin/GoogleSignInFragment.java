@@ -20,14 +20,15 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.view.View;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.CommonStatusCodes;
@@ -320,7 +321,7 @@ public class GoogleSignInFragment extends Fragment implements
       }
     } catch (Throwable throwable) {
       GoogleSignInHelper.logError("Exception caught! " + throwable.getMessage());
-      request.setResult(CommonStatusCodes.INTERNAL_ERROR, null);
+      request.setResult(GoogleSignInStatusCodes.INTERNAL_ERROR, null);
       return;
     }
 
@@ -353,7 +354,7 @@ public class GoogleSignInFragment extends Fragment implements
         builder.requestServerAuthCode(request.getWebClientId(), request.getForceRefresh());
       } else {
         GoogleSignInHelper.logError("Web client ID is needed for Auth Code");
-        request.setResult(CommonStatusCodes.DEVELOPER_ERROR, null);
+        request.setResult(GoogleSignInStatusCodes.DEVELOPER_ERROR, null);
         throw new IllegalStateException("Web client ID is needed for Auth Code");
       }
     }
@@ -370,7 +371,7 @@ public class GoogleSignInFragment extends Fragment implements
         builder.requestIdToken(request.getWebClientId());
       } else {
         GoogleSignInHelper.logError("Web client ID is needed for ID Token");
-        request.setResult(CommonStatusCodes.DEVELOPER_ERROR, null);
+        request.setResult(GoogleSignInStatusCodes.DEVELOPER_ERROR, null);
         throw new IllegalStateException("Web client ID is needed for Auth Code");
       }
     }
@@ -407,7 +408,7 @@ public class GoogleSignInFragment extends Fragment implements
         clientBuilder.addApi(getGamesAPI());
       } catch (Exception e) {
         GoogleSignInHelper.logError("Exception getting Games API: " + e.getMessage());
-        request.setResult(CommonStatusCodes.DEVELOPER_ERROR, null);
+        request.setResult(GoogleSignInStatusCodes.DEVELOPER_ERROR, null);
         return;
       }
     }

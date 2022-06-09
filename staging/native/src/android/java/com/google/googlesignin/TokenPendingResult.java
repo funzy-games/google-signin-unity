@@ -17,6 +17,7 @@ package com.google.googlesignin;
 
 import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -48,7 +49,7 @@ public class TokenPendingResult extends PendingResult<TokenResult> {
     try {
       latch.await();
     } catch (InterruptedException e) {
-      setResult(null, CommonStatusCodes.INTERRUPTED);
+      setResult(null, GoogleSignInStatusCodes.INTERRUPTED);
     }
 
     return getResult();
@@ -58,17 +59,17 @@ public class TokenPendingResult extends PendingResult<TokenResult> {
   public TokenResult await(long l, TimeUnit timeUnit) {
     try {
       if (!latch.await(l, timeUnit)) {
-        setResult(null, CommonStatusCodes.TIMEOUT);
+        setResult(null, GoogleSignInStatusCodes.TIMEOUT);
       }
     } catch (InterruptedException e) {
-      setResult(null, CommonStatusCodes.INTERRUPTED);
+      setResult(null, GoogleSignInStatusCodes.INTERRUPTED);
     }
     return getResult();
   }
 
   @Override
   public void cancel() {
-    setResult(null, CommonStatusCodes.CANCELED);
+    setResult(null, GoogleSignInStatusCodes.CANCELED);
     latch.countDown();
   }
 
@@ -94,10 +95,10 @@ public class TokenPendingResult extends PendingResult<TokenResult> {
       ResultCallback<? super TokenResult> resultCallback, long l, TimeUnit timeUnit) {
     try {
       if (!latch.await(l, timeUnit)) {
-        setResult(null, CommonStatusCodes.TIMEOUT);
+        setResult(null, GoogleSignInStatusCodes.TIMEOUT);
       }
     } catch (InterruptedException e) {
-      setResult(null, CommonStatusCodes.INTERRUPTED);
+      setResult(null, GoogleSignInStatusCodes.INTERRUPTED);
     }
 
     resultCallback.onResult(getResult());

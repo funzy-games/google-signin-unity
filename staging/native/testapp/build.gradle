@@ -14,16 +14,16 @@
  */
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:4.2.0'
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
         maven {
             url "https://maven.google.com"
         }
@@ -59,8 +59,8 @@ project.ext {
 }
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    compileSdkVersion 31
+    buildToolsVersion '30.0.3'
 
     sourceSets {
         main {
@@ -76,7 +76,7 @@ android {
     defaultConfig {
         applicationId 'com.google.signin.testapp'
         minSdkVersion 14
-        targetSdkVersion 26
+        targetSdkVersion 31
         versionName project.version
         archivesBaseName = project.ext.baseName
         externalNativeBuild {
@@ -85,7 +85,7 @@ android {
             }
         }
         ndk {
-            abiFilters 'x86', 'armeabi-v7a'
+            abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
         }
     }
     buildTypes {
@@ -102,7 +102,7 @@ android {
 }
 
 dependencies {
-    compile 'com.google.android.gms:play-services-auth:11.8.0'
+    compile 'com.google.android.gms:play-services-auth:20.2.0'
     // Depend on the AAR built with the google sign in library in order to add
     // the java helper classes which are used by the c++ library.
     compile(name:'google-signin-cpp-release', ext:'aar')

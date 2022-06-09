@@ -16,6 +16,7 @@
 package com.google.googlesignin;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.Result;
 import com.google.android.gms.common.api.Status;
@@ -28,7 +29,7 @@ public class TokenResult implements Result {
   private long handle;
 
   TokenResult() {
-    status = new Status(CommonStatusCodes.SIGN_IN_REQUIRED);
+    status = new Status(GoogleSignInStatusCodes.SIGN_IN_REQUIRED);
     account = null;
   }
 

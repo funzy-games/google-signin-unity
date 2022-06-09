@@ -223,12 +223,17 @@ static SignInResult *startSignIn() {
  * Sign-In.  The return value is a pointer to the currentResult object.
  */
 void *GoogleSignIn_SignIn() {
+  [GIDSignIn sharedInstance].presentingViewController = UnityGetGLViewController();
   SignInResult *result = startSignIn();
   if (!result) {
     [[GIDSignIn sharedInstance] signIn];
     result = currentResult_.get();
   }
   return result;
+}
+
+bool GoogleSignIn_CanBeSilent() {
+  return [GIDSignIn sharedInstance].hasPreviousSignIn;
 }
 
 /**

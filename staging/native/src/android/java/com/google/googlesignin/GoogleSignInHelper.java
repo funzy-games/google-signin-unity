@@ -18,6 +18,7 @@ package com.google.googlesignin;
 import android.app.Activity;
 import android.util.Log;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.api.CommonStatusCodes;
 
 /**
@@ -89,7 +90,7 @@ public class GoogleSignInHelper {
         logError("There is already a pending" + " authentication token request!");
       }
     } else {
-      nativeOnResult(requestHandle, CommonStatusCodes.DEVELOPER_ERROR, null);
+      nativeOnResult(requestHandle, GoogleSignInStatusCodes.DEVELOPER_ERROR, null);
     }
   }
 
@@ -98,7 +99,7 @@ public class GoogleSignInHelper {
     GoogleSignInFragment fragment = GoogleSignInFragment.getInstance(activity);
 
     if (!fragment.startSignIn()) {
-      nativeOnResult(requestHandle, CommonStatusCodes.DEVELOPER_ERROR, null);
+      nativeOnResult(requestHandle, GoogleSignInStatusCodes.DEVELOPER_ERROR, null);
     }
   }
 
@@ -107,7 +108,7 @@ public class GoogleSignInHelper {
     GoogleSignInFragment fragment = GoogleSignInFragment.getInstance(activity);
 
     if (!fragment.startSignInSilently()) {
-      nativeOnResult(requestHandle, CommonStatusCodes.DEVELOPER_ERROR, null);
+      nativeOnResult(requestHandle, GoogleSignInStatusCodes.DEVELOPER_ERROR, null);
     }
   }
 
