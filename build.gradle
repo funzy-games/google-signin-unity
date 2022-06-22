@@ -20,10 +20,10 @@ import groovy.io.FileType
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.android.tools.build:gradle:4.2.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -33,7 +33,7 @@ buildscript {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 
@@ -44,9 +44,15 @@ project.ext {
     os_windows = os_name.contains("windows");
     os_linux = os_name.contains("linux");
 
+    def localProperties = new Properties()
+    localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
     unity_exe = System.getProperty("UNITY_EXE")
     if (unity_exe == null || unity_exe.isEmpty()) {
         unity_exe = System.getenv("UNITY_EXE")
+    }
+    if (unity_exe == null || unity_exe.isEmpty()) {
+        unity_exe = localProperties["UNITY_EXE"]
     }
     if (unity_exe == null || unity_exe.isEmpty()) {
         if (os_osx) {
@@ -152,7 +158,7 @@ task import_jarresolver() {
 
     doLast {
         def tree = fileTree(resolverDir) {
-            include "*.unitypackage"
+            include "external-dependency-manager-latest.unitypackage"
         }
         def jarresolver_package = tree.getSingleFile()
         def argv = [
@@ -185,7 +191,11 @@ task import_jarresolver() {
 task generate_dependency_xml() {
   description "Generate the JarResolver dependency file for the support library"
   dependsOn copy_unity_project
-  doFirst {
+    doFirst {
+        if (file("${pluginProjectPath}/${editorDir}/GoogleSignInSupportDependencies.xml").exists()) {
+            delete "${pluginProjectPath}/${editorDir}/GoogleSignInSupportDependencies.xml"
+        }
+
     def xmlFile = file("${pluginProjectPath}/${editorDir}/GoogleSignInSupportDependencies.xml")
 
     xmlFile << '<?xml version="1.0" encoding="UTF-8" ?>\n'
@@ -195,7 +205,7 @@ task generate_dependency_xml() {
     xmlFile << '    <androidPackage spec="com.google.signin:google-signin-support:'
     xmlFile << "${pluginVersion}\">\n"
     xmlFile << '      <repositories>\n'
-    xmlFile << '        <repository>Assets/GoogleSignIn/Editor/m2repository</repository>\n'
+    xmlFile << '        <repository>Assets/Scripts/GoogleSignIn/Editor/m2repository</repository>\n'
     xmlFile << '      </repositories>\n'
     xmlFile << '    </androidPackage>\n'
     xmlFile << '  </androidPackages>\n'
@@ -242,7 +252,7 @@ task package_plugin () {
 
     doLast {
         def tree = fileTree(resolverDir) {
-            include "*.unitypackage"
+            include "external-dependency-manager-latest.unitypackage"
         }
         def jarresolver_package = tree.getSingleFile()
         def argv = [
